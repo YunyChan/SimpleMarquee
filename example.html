@@ -3,12 +3,48 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>SimpleMarquee Example</title>
+    <style>
+        *{padding: 0; margin: 0;}
+        ul{list-style: none;}
+        ul li{display: inline-block; *zoom: 1; *display:inline;}
+    </style>
 </head>
 <body>
     <div id="marquee"></div>
     <script src="src/SimpleMarquee.js"></script>
     <script>
-        // todo
+        var oData = [
+            {
+                name: 'test1',
+                age: 15
+            },
+            {
+                name: 'test2',
+                age: 20
+            },
+            {
+                name: 'test3',
+                age: 25
+            },
+            {
+                name: 'test4',
+                age: 30
+            },
+            {
+                name: 'test5',
+                age: 35
+            }
+        ];
+        var oMarquee = new SimpleMarquee({
+            target: document.getElementById('marquee'),
+            data: oData,
+            item: function(nIndex, oData){
+                return 'Name：' + oData.name + ' & Age:' + oData.age + '.';
+            },
+            gap: 50,
+            speed: 5,
+            fps: 40
+        });
     </script>
 </body>
 </html>
