@@ -29,6 +29,11 @@
     SimpleMarquee.prototype.render = fRender;
     SimpleMarquee.prototype.getItemsWidthAndHeight = fGetItemsWidthAndHeight;
     SimpleMarquee.prototype.setWrapWidthAndHeight = fSetWrapWidthAndHeight;
+    SimpleMarquee.prototype.setStartPosition = fSetStartPosition;
+    SimpleMarquee.prototype.run = fRun;
+    SimpleMarquee.prototype.updatePosition = fUpdatePosition;
+    SimpleMarquee.prototype.isHeaderInvisible = fIsHeaderInvisible;
+    SimpleMarquee.prototype.stop = fStop;
 
     function fConstructor(oConf){
         oConf = oConf || {};
@@ -39,13 +44,13 @@
         this.item = oConf.item || '';
         this.fps = oConf.fps || 30;
         this.data = oConf.data || [];
-
-        this.interval = Math.floor(1000 / this.fps);
+        this.fromOutside = oConf.fromOutside;
 
         this.init();
     }
 
     function fInit(){
+        this.interval = Math.floor(1000 / this.fps);
         this.render();
     }
 
@@ -63,17 +68,17 @@
     }
 
     function fRender(){
-        var oUl = oDoc.createElement('ul');
-        oUl.innerHTML = this.createItems();
-        oUl.style.position = 'absolute';
-        oUl.style.top = '0px';
-        oUl.style.left = '0px';
+        this.wrap = oDoc.createElement('ul');
+        this.wrap.innerHTML = this.createItems();
+        this.wrap.style.position = 'absolute';
+        this.wrap.style.top = '0px';
 
         this.target.style.position = 'relative';
         this.target.style.overflow = 'hidden';
-        this.target.appendChild(oUl);
+        this.target.appendChild(this.wrap);
 
-        this.setWrapWidthAndHeight(this.getItemsWidthAndHeight(), oUl);
+        this.setWrapWidthAndHeight(this.getItemsWidthAndHeight());
+        this.setStartPosition();
     }
 
     function fGetItemsWidthAndHeight(){
@@ -96,13 +101,39 @@
         }
     }
 
-    function fSetWrapWidthAndHeight(oParams, oUl){
-        oUl.style.width = oParams.width + 'px';
-        oUl.height = oParams.height + 'px';
-        oUl.lineHeight = oParams.height + 'px';
+    function fSetWrapWidthAndHeight(oParams){
+        this.wrap.style.width = oParams.width + 'px';
+        this.wrap.height = oParams.height + 'px';
+        this.wrap.lineHeight = oParams.height + 'px';
         this.target.style.height = oParams.height + 'px';
     }
 
+    function fSetStartPosition(){
+        if(this.fromOutside){
+            this.wrap.style.left = this.target.offsetWidth + 'px';
+        }else{
+            this.wrap.style.left = '0px';
+        }
+    }
+
+    function fRun(){
+        var that = this;
+        this.intervalID = setInterval(function(){
+            that.updatePosition();
+        }, this.interval);
+    }
+
+    function fUpdatePosition(){
+
+    }
+
+    function fIsHeaderInvisible(){
+
+    }
+
+    function fStop(){
+
+    }
 
     if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
         define(function() {
