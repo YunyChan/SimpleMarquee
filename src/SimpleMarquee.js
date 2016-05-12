@@ -46,12 +46,12 @@
         oConf = oConf || {};
         this.target = oConf.target;
         this.width = oConf.width;
+        this.data = oConf.data || [];
+        this.item = oConf.item || '';
         this.minGap = oConf.gap || oConf.minGap || 10;
         this.maxGap = oConf.gap || oConf.maxGap || 10;
         this.speed = oConf.speed || 2;
-        this.item = oConf.item || '';
-        this.fps = oConf.fps || 30;
-        this.data = oConf.data || [];
+        this.fps = oConf.fps || 40;
         this.fromOutside = oConf.fromOutside;
 
         this.init();
