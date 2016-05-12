@@ -55,6 +55,7 @@
         this.fromOutside = oConf.fromOutside;
 
         this.init();
+        return this;
     }
 
     function fInit(){
@@ -142,12 +143,14 @@
             that.updatePosition();
             that.onUpdate();
         }, this.interval);
+        return this;
     }
 
     function fStop(){
         if(this.data.length > 0){
             clearInterval(this.intervalID);
         }
+        return this;
     }
 
     function fOnUpdate(){
