@@ -27,14 +27,20 @@
     SimpleMarquee.prototype.createItems = fCreateItems;
     SimpleMarquee.prototype.getGapWidth = fGetGapWidth;
     SimpleMarquee.prototype.render = fRender;
+    SimpleMarquee.prototype.onAfterRender = fOnAfterRender;
     SimpleMarquee.prototype.getItemsWidthAndHeight = fGetItemsWidthAndHeight;
     SimpleMarquee.prototype.setWrapWidthAndHeight = fSetWrapWidthAndHeight;
     SimpleMarquee.prototype.setStartPosition = fSetStartPosition;
     SimpleMarquee.prototype.run = fRun;
+    SimpleMarquee.prototype.stop = fStop;
+    SimpleMarquee.prototype.onUpdate = fOnUpdate;
+    SimpleMarquee.prototype.onHeaderUpdate = fOnHeaderUpdate;
+    SimpleMarquee.prototype.onWrapUpdate = fOnWrapUpdate;
     SimpleMarquee.prototype.updatePosition = fUpdatePosition;
     SimpleMarquee.prototype.isHeaderInvisible = fIsHeaderInvisible;
     SimpleMarquee.prototype.moveHeaderToEnd = fMoveHeaderToEnd;
-    SimpleMarquee.prototype.stop = fStop;
+    SimpleMarquee.prototype.isWrapInvisible = fIsWrapInvisible;
+    SimpleMarquee.prototype.resetWrapLeftPosition = fResetWrapLeftPosition;
 
     function fConstructor(oConf){
         oConf = oConf || {};
@@ -60,7 +66,7 @@
         var sItemsHTML = '';
         for(var cnt = 0, length = this.data.length; cnt < length; cnt++){
             var oData = this.data[cnt];
-            sItemsHTML += '<li style="padding-right: ' + this.getGapWidth() + 'px">' + this.item(cnt, oData) + '</li>';
+            sItemsHTML += '<li style="padding-left: ' + this.getGapWidth() + 'px">' + this.item(cnt, oData) + '</li>';
         }
         return sItemsHTML;
     }
@@ -80,8 +86,18 @@
         this.target.style.overflow = 'hidden';
         this.target.appendChild(this.wrap);
 
-        this.setWrapWidthAndHeight(this.getItemsWidthAndHeight());
+        var oItemsWithAndHeight = this.getItemsWidthAndHeight();
+        this.setWrapWidthAndHeight(oItemsWithAndHeight);
         this.setStartPosition();
+        this.onAfterRender(oItemsWithAndHeight.width);
+    }
+
+    function fOnAfterRender(nItemsTotalWith){
+        if(nItemsTotalWith > this.width){
+            this.onUpdate = this.onHeaderUpdate;
+        }else{
+            this.onUpdate = this.onWrapUpdate;
+        }
     }
 
     function fGetItemsWidthAndHeight(){
@@ -97,6 +113,7 @@
         }
 
         this.header = oLis[0];
+        this.last = oLis[oLis.length - 1];
 
         return {
             width: nWidth,
@@ -123,10 +140,29 @@
         var that = this;
         this.intervalID = setInterval(function(){
             that.updatePosition();
-            if(that.isHeaderInvisible()){
-                that.moveHeaderToEnd();
-            }
+            that.onUpdate();
         }, this.interval);
+    }
+
+    function fStop(){
+        if(this.data.length > 0){
+            clearInterval(this.intervalID);
+        }
+    }
+
+    function fOnUpdate(){
+    }
+
+    function fOnHeaderUpdate(){
+        if(this.isHeaderInvisible()){
+            this.moveHeaderToEnd();
+        }
+    }
+
+    function fOnWrapUpdate(){
+        if(this.isWrapInvisible()){
+            this.resetWrapLeftPosition();
+        }
     }
 
     function fUpdatePosition(){
@@ -149,10 +185,14 @@
         oWrap.appendChild(oOldFirstItem);
     }
 
-    function fStop(){
-        if(this.data.length > 0){
-            clearInterval(this.intervalID);
-        }
+    function fIsWrapInvisible(){
+        var oTargetRect = this.target.getBoundingClientRect();
+        var oLastRect = this.last.getBoundingClientRect();
+        return oLastRect.right < oTargetRect.left;
+    }
+
+    function fResetWrapLeftPosition(){
+        this.wrap.style.left = this.width + 'px';
     }
 
     if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {
