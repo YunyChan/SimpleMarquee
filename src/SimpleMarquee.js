@@ -33,11 +33,13 @@
     SimpleMarquee.prototype.run = fRun;
     SimpleMarquee.prototype.updatePosition = fUpdatePosition;
     SimpleMarquee.prototype.isHeaderInvisible = fIsHeaderInvisible;
+    SimpleMarquee.prototype.moveHeaderToEnd = fMoveHeaderToEnd;
     SimpleMarquee.prototype.stop = fStop;
 
     function fConstructor(oConf){
         oConf = oConf || {};
         this.target = oConf.target;
+        this.width = oConf.width;
         this.minGap = oConf.gap || oConf.minGap || 10;
         this.maxGap = oConf.gap || oConf.maxGap || 10;
         this.speed = oConf.speed || 2;
@@ -73,6 +75,7 @@
         this.wrap.style.position = 'absolute';
         this.wrap.style.top = '0px';
 
+        this.target.style.width = this.width + 'px';
         this.target.style.position = 'relative';
         this.target.style.overflow = 'hidden';
         this.target.appendChild(this.wrap);
@@ -120,19 +123,36 @@
         var that = this;
         this.intervalID = setInterval(function(){
             that.updatePosition();
+            if(that.isHeaderInvisible()){
+                that.moveHeaderToEnd();
+            }
         }, this.interval);
     }
 
     function fUpdatePosition(){
-
+        var oWrap = this.wrap;
+        oWrap.style.left = (parseInt(oWrap.style.left) - this.speed) + 'px';
     }
 
     function fIsHeaderInvisible(){
+        var oTargetRect = this.target.getBoundingClientRect();
+        var oHeaderRect = this.header.getBoundingClientRect();
+        return oHeaderRect.right < oTargetRect.left;
+    }
 
+    function fMoveHeaderToEnd(){
+        var nHeaderWidth = this.header.offsetWidth;
+        var oWrap = this.wrap;
+        oWrap.style.left = (parseInt(oWrap.style.left) + nHeaderWidth) + 'px';
+        var oOldFirstItem = oWrap.removeChild(this.header);
+        this.header = this.target.getElementsByTagName('li')[0];
+        oWrap.appendChild(oOldFirstItem);
     }
 
     function fStop(){
-
+        if(this.data.length > 0){
+            clearInterval(this.intervalID);
+        }
     }
 
     if (typeof define === 'function' && typeof define.amd === 'object' && define.amd) {

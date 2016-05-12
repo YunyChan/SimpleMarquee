@@ -37,6 +37,7 @@
         ];
         var oMarquee = new SimpleMarquee({
             target: document.getElementById('marquee'),
+            width: 800,
             data: oData,
             item: function(nIndex, oData){
                 return 'Name：' + oData.name + ' & Age:' + oData.age + '.';
@@ -45,6 +46,7 @@
             speed: 5,
             fps: 40
         });
+        oMarquee.run();
     </script>
 </body>
 </html>
