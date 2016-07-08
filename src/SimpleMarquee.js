@@ -20,9 +20,9 @@
 
 
     var SimpleMarquee = fConstructor;
-    // ¾²Ì¬±äÁ¿
+    // é™æ€å˜é‡
     SimpleMarquee.prototype.XXX = '';
-    // ¾²Ì¬·½·¨
+    // é™æ€æ–¹æ³•
     SimpleMarquee.prototype.init = fInit;
     SimpleMarquee.prototype.createItems = fCreateItems;
     SimpleMarquee.prototype.getGapWidth = fGetGapWidth;
