@@ -15,30 +15,25 @@
 <script src="SimpleMarquee.js"></script>
 ```
 
-然后通过创建SimpleVideo的实例并传入相应的参数来插入并使用组件
+然后通过创建SimpleMarquee的实例并传入相应的参数来插入并使用组件
 
 ```html
 <div id="marquee"></div>
 <script src="SimpleMarquee.js"></script>
 <script>
-    var oData = [
-        {
+    var oData = [{
             name: 'test1',
             age: 15
-        },
-        {
+        }, {
             name: 'test2',
             age: 20
-        },
-        {
+        }, {
             name: 'test3',
             age: 25
-        },
-        {
+        }, {
             name: 'test4',
             age: 30
-        },
-        {
+        }, {
             name: 'test5',
             age: 35
         }

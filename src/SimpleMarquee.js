@@ -2,26 +2,9 @@
  * Created by yunying on 2016/4/18.
  */
 (function(oWin, oDoc){
-    // Helper
-    var Helper = {
-        listenEvent: fListenEvent
-    };
-
-    function fListenEvent(oDom, sEventName, fCallback, bUseCapture){
-        if(oWin.attachEvent){
-            oDom.attachEvent('on' + sEventName, function(){
-                var oEvent = oWin.event;
-                fCallback && fCallback(oEvent);
-            });
-        }else{
-            oDom.addEventListener(sEventName, fCallback, !!bUseCapture);
-        }
-    }
-
-
     var SimpleMarquee = fConstructor;
     // 静态变量
-    SimpleMarquee.prototype.XXX = '';
+    //SimpleMarquee.prototype.XXX = '';
     // 静态方法
     SimpleMarquee.prototype.init = fInit;
     SimpleMarquee.prototype.createItems = fCreateItems;
