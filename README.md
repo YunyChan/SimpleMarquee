@@ -66,6 +66,10 @@
 + `fps` - _default: 40_, 走马灯移动帧速
 + `fromOutside` - _default: false_, 走马灯内容起始位置是否从遮罩的最右边开始
 
+APIs
+* `run()` - 启动走马灯
+* `stop()` - 暂停走马灯
+
 ## 作者 ##
 
 Yuny Chan
