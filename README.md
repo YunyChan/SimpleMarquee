@@ -1,4 +1,4 @@
-# SimpleMarquee [![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/YunyChan/SimpleMarquee/blob/master/LICENSE) #
+# SimpleMarquee [![license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/YunyChan/SimpleMarquee/blob/master/LICENSE) #
 
 一个不依赖任何第三方框架库的简易走马灯组件。
 
