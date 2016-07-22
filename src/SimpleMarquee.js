@@ -10,10 +10,10 @@
     SimpleMarquee.prototype.createItems = fCreateItems;
     SimpleMarquee.prototype.getGapWidth = fGetGapWidth;
     SimpleMarquee.prototype.render = fRender;
-    SimpleMarquee.prototype.onAfterRender = fOnAfterRender;
     SimpleMarquee.prototype.getItemsWidthAndHeight = fGetItemsWidthAndHeight;
     SimpleMarquee.prototype.setWrapWidthAndHeight = fSetWrapWidthAndHeight;
     SimpleMarquee.prototype.setStartPosition = fSetStartPosition;
+    SimpleMarquee.prototype.onAfterRender = fOnAfterRender;
     SimpleMarquee.prototype.run = fRun;
     SimpleMarquee.prototype.stop = fStop;
     SimpleMarquee.prototype.onUpdate = fOnUpdate;
@@ -76,23 +76,15 @@
         this.onAfterRender(oItemsWithAndHeight.width);
     }
 
-    function fOnAfterRender(nItemsTotalWith){
-        if(nItemsTotalWith > this.width){
-            this.onUpdate = this.onHeaderUpdate;
-        }else{
-            this.onUpdate = this.onWrapUpdate;
-        }
-    }
-
     function fGetItemsWidthAndHeight(){
         var oLis = this.target.getElementsByTagName('li');
-        var nWidth = 0;
-        var nHeight = 0;
+        var nTotalWidth = 0;
+        var nCurrentMaxHeight = 0;
         for(var cnt = 0, length = oLis.length; cnt < length; cnt ++){
             var oLi = oLis[cnt];
-            nWidth += (oLi.offsetWidth + 1);
-            if(oLi.offsetHeight > nHeight){
-                nHeight = oLi.offsetHeight;
+            nTotalWidth += (oLi.clientWidth + 1);
+            if(oLi.clientHeight > nCurrentMaxHeight){
+                nCurrentMaxHeight = oLi.clientHeight;
             }
         }
 
@@ -100,15 +92,15 @@
         this.last = oLis[oLis.length - 1];
 
         return {
-            width: nWidth,
-            height: nHeight
+            width: nTotalWidth,
+            height: nCurrentMaxHeight
         }
     }
 
     function fSetWrapWidthAndHeight(oParams){
         this.wrap.style.width = oParams.width + 'px';
-        this.wrap.height = oParams.height + 'px';
-        this.wrap.lineHeight = oParams.height + 'px';
+        this.wrap.style.height = oParams.height + 'px';
+        //this.wrap.style.lineHeight = oParams.height + 'px'; // ie bug fix
         this.target.style.height = oParams.height + 'px';
     }
 
@@ -120,12 +112,22 @@
         }
     }
 
+    function fOnAfterRender(nItemsTotalWith){
+        if(nItemsTotalWith > this.width){
+            this.onUpdate = this.onHeaderUpdate;
+        }else{
+            this.onUpdate = this.onWrapUpdate;
+        }
+    }
+
     function fRun(){
         var that = this;
-        this.intervalID = setInterval(function(){
-            that.updatePosition();
-            that.onUpdate();
-        }, this.interval);
+        if(this.data.length > 0){
+            this.intervalID = setInterval(function(){
+                that.updatePosition();
+                that.onUpdate();
+            }, this.interval);
+        }
         return this;
     }
 
