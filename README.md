@@ -55,18 +55,20 @@
 
 下面是组件的配置参数说明：
 
-+ `target` - __必须__, 需要插入走马灯的dom元素
-+ `width` - __必须__, 走马灯遮罩宽度（单位px）
++ `width` - __必须__, 走马灯遮罩宽度
++ `unit` - _default: px_, 样式单位px/rem
 + `data` - __必须__, 数据源
 + `item` - _必须_, 走马灯每项的模板
-+ `gap` - _default: 10px_, 走马灯各项间隔宽度（单位px）
-+ `maxGap` - _default: 10px_, 走马灯间隔最大宽度（单位px）
-+ `minGap` - _default: 10px_, 走马灯间隔最小宽度（单位px）
-+ `speed` - _default: 2px_, 走马灯每帧移动距离（单位px）
++ `gap` - _default: 10px_, 走马灯各项间隔宽度
++ `maxGap` - _default: 10px_, 走马灯间隔最大宽度
++ `minGap` - _default: 10px_, 走马灯间隔最小宽度
++ `speed` - _default: 2px_, 走马灯每帧移动距离
 + `fps` - _default: 40_, 走马灯移动帧速
 + `fromOutside` - _default: false_, 走马灯内容起始位置是否从遮罩的最右边开始
 
 APIs
+* `render(DOM)` - 渲染组件
+    * `DOM` - 需要插入组件的DOM元素对象
 * `run()` - 启动走马灯
 * `stop()` - 暂停走马灯
 

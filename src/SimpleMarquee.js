@@ -27,8 +27,8 @@
 
     function fConstructor(oConf){
         oConf = oConf || {};
-        this.target = oConf.target;
         this.width = oConf.width;
+        this.unit = oConf.unit || 'px';
         this.data = oConf.data || [];
         this.item = oConf.item || '';
         this.minGap = oConf.gap || oConf.minGap || 10;
@@ -43,14 +43,13 @@
 
     function fInit(){
         this.interval = Math.floor(1000 / this.fps);
-        this.render();
     }
 
     function fCreateItems(){
         var sItemsHTML = '';
         for(var cnt = 0, length = this.data.length; cnt < length; cnt++){
             var oData = this.data[cnt];
-            sItemsHTML += '<li style="padding-left: ' + this.getGapWidth() + 'px">' + this.item(cnt, oData) + '</li>';
+            sItemsHTML += '<li style="padding-left: ' + this.getGapWidth() + this.unit + '">' + this.item(cnt, oData) + '</li>';
         }
         return sItemsHTML;
     }
@@ -59,13 +58,15 @@
         return Math.floor(Math.random() * (this.maxGap - this.minGap)) + this.minGap;
     }
 
-    function fRender(){
+    function fRender(oTarget){
+        this.target = oTarget;
+
         this.wrap = oDoc.createElement('ul');
         this.wrap.innerHTML = this.createItems();
         this.wrap.style.position = 'absolute';
         this.wrap.style.top = '0px';
 
-        this.target.style.width = this.width + 'px';
+        this.target.style.width = this.width + this.unit;
         this.target.style.position = 'relative';
         this.target.style.overflow = 'hidden';
         this.target.appendChild(this.wrap);
@@ -74,6 +75,8 @@
         this.setWrapWidthAndHeight(oItemsWithAndHeight);
         this.setStartPosition();
         this.onAfterRender(oItemsWithAndHeight.width);
+
+        return this;
     }
 
     function fGetItemsWidthAndHeight(){
@@ -93,7 +96,7 @@
 
         return {
             width: nTotalWidth,
-            height: nCurrentMaxHeight
+            height: nCurrentMaxHeight + 1
         }
     }
 

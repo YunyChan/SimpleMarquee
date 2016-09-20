@@ -40,15 +40,15 @@
             }
         ];
         var oMarquee = new SimpleMarquee({
-            target: document.getElementById('marquee'),
-            width: 800,
+            width: 20,
             data: oData,
             item: function(nIndex, oData){
                 return 'Name：' + oData.name + ' & Age:' + oData.age + '.';
             },
-            gap: 50,
+            gap: 1,
+            unit: 'rem',
             fromOutside: true
-        });
+        }).render(document.getElementById('marquee'));
         oMarquee.run();
     </script>
 </body>
